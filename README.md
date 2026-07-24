@@ -38,3 +38,5 @@ Development and QA are always separate steps.
 ## Usage
 
 Copy this repo's contents into a new client project, then open it in Claude Code. Claude will detect the placeholder project header in `docs/figma-brief.md` and start the intake questions automatically.
+
+Check This Document For More Information - https://docs.google.com/document/d/1sQk7E7yUn1NQ_MH9rSwOsAbJq8CfP2zYis75QehhDIw/edit?tab=t.0#heading=h.nqk17tkh8bq3
