@@ -1,0 +1,12 @@
+# Runs on every commit (installed by `npm install` via the "prepare": "husky" script).
+
+# 1. Lint + format only the staged files (rules live in package.json → "lint-staged").
+npx lint-staged
+
+# 2. Theme Check as the final Liquid gate (same check the shopify-liquid skill and qa agent use).
+#    Needs Shopify CLI installed globally: npm install -g @shopify/cli
+if ! command -v shopify >/dev/null 2>&1; then
+  echo "pre-commit: Shopify CLI not found, so theme check can't run. Install it with: npm install -g @shopify/cli"
+  exit 1
+fi
+shopify theme check

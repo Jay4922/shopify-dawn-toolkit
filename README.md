@@ -11,6 +11,12 @@ claude/
     shopify-liquid/       Liquid, schema, sections/snippets/blocks standard
     shopify-javascript/   Theme JS standard (custom.js, sliders, cart AJAX)
     tailwind-css/         Tailwind v4 conventions for Dawn-fork projects
+      references/         Copy to the theme root at project init:
+        package.json        Standard scripts/deps (fixed Tailwind build script, ESLint, Prettier, Husky)
+        eslint.config.mjs   Lints only assets/custom*.js
+        .prettierrc.json    Prettier + Liquid plugin
+        .prettierignore     Skips build output and Dawn's original assets
+        .husky/pre-commit   lint-staged + shopify theme check
     ada-accessibility/    WCAG 2.1 AA build-time standard
     performance/          Core Web Vitals / lazy-load / bundle-size standard
     seo/                  Headings, structured data, metadata standard

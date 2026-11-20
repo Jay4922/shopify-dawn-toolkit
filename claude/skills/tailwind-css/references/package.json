@@ -1,0 +1,41 @@
+{
+    "name": "<project-name>",
+    "version": "1.0.0",
+    "main": "index.js",
+    "scripts": {
+        "build": "npx @tailwindcss/cli -i css/application.css -o assets/application.css.liquid -w -m",
+        "format": "prettier --write snippets/ templates/ sections/ layout/ config/ assets/",
+        "lint": "eslint . --ext .js",
+        "prepare": "husky"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/<org>/<repo>.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "type": "commonjs",
+    "bugs": {
+        "url": "https://github.com/<org>/<repo>/issues"
+    },
+    "homepage": "https://github.com/<org>/<repo>#readme",
+    "dependencies": {
+        "@tailwindcss/cli": "^4.3.0",
+        "tailwindcss": "^4.3.0"
+    },
+    "devDependencies": {
+        "@eslint/js": "^10.0.1",
+        "@shopify/prettier-plugin-liquid": "^1.11.0",
+        "eslint": "^10.4.1",
+        "globals": "^17.6.0",
+        "husky": "^9.1.7",
+        "lint-staged": "^17.3.0",
+        "prettier": "^3.9.6"
+    },
+    "lint-staged": {
+        "*.js": ["eslint --fix --no-warn-ignored", "prettier --write"],
+        "*.{jsx,ts,tsx,css,md,liquid}": "prettier --write"
+    },
+    "keywords": [],
+    "description": ""
+}

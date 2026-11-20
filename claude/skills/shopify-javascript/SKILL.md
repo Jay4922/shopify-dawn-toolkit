@@ -10,7 +10,7 @@ Single source of truth for all team-authored JS. The build follows it; the `qa` 
 ## The one-file rule (load-bearing for linting)
 
 - **All team-authored JS lives in ONE shared file: `assets/custom.js`.** One file for every section's JS, appended per section with a clear header: `/* ===== custom-hero-slider ===== */`.
-- The `custom` prefix is load-bearing: ESLint/Prettier are configured to lint ONLY `custom*` files and ignore Dawn's originals. Never create per-section JS files, never put logic in `{% javascript %}` tags (it escapes linting), never edit Dawn's original JS.
+- The `custom` prefix is load-bearing: ESLint/Prettier are configured to lint ONLY `custom*` files and ignore Dawn's originals (standard configs: `tailwind-css/references/eslint.config.mjs` and `.prettierignore`, copied to the theme root at init). Never create per-section JS files, never put logic in `{% javascript %}` tags (it escapes linting), never edit Dawn's original JS.
 - Verify the ignore-glob actually covers `custom.js` (no dash) and not just `custom-*.js` (with a dash) — run `npx eslint assets/custom.js` directly after any change to `eslint.config.mjs`'s ignore patterns. A 0-error pre-commit result can mean the file was silently never scanned, not that it's clean.
 - Loaded ONCE in `layout/theme.liquid`: `<script src="{{ 'custom.js' | asset_url }}" defer="defer"></script>`. Sections never add their own script tags. If the tag isn't there yet, add it once.
 

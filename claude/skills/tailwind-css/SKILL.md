@@ -40,6 +40,31 @@ css/
 
 `application.css` stays clean: Tailwind import, theme variables, imports above — no component/custom CSS directly in this file.
 
+### 1.2a `package.json` (create at project init, before any CSS)
+
+Copy `references/package.json` (next to this skill) to the theme root, replace the `<project-name>` / `<org>/<repo>` placeholders with the project's values, then run `npm install`. Do not hand-write a new one or pull from another project's `package.json` — the reference is the team standard.
+
+The `build` script is fixed and must be exactly:
+
+```json
+"build": "npx @tailwindcss/cli -i css/application.css -o assets/application.css.liquid -w -m"
+```
+
+- Input `css/application.css`, output `assets/application.css.liquid` — no other paths.
+- `-w` (watch) and `-m` (minify) both required — `npm run build` is the long-running watcher (§6), not a one-off build.
+- Don't rename the script, split it into `build`/`watch`/`dev` variants, add a PostCSS/Vite pipeline, or add a `tailwind.config.js` (Tailwind v4 config lives in `@theme` inside `application.css`).
+
+Other scripts/tooling come with the reference as-is: `format` (Prettier + `@shopify/prettier-plugin-liquid` over theme folders), `lint` (ESLint), `prepare: husky` (installs git hooks), and `lint-staged` (on staged `.js`: ESLint fix THEN Prettier, in sequence — never two overlapping globs that run both on the same file in parallel; Prettier alone on `.css/.md/.liquid`).
+
+Copy the rest of `references/` to the theme root at the same time — these are the configs the scripts depend on:
+
+| File | Purpose |
+|---|---|
+| `eslint.config.mjs` | Lints ONLY `assets/custom*.js` (Dawn's JS ignored). Declares Dawn's globals (`debounce`, `fetchConfig`, `publish`/`subscribe`, `Swiper`, etc.) so `custom.js` doesn't fail `no-undef`. |
+| `.prettierrc.json` | Loads `@shopify/prettier-plugin-liquid`. |
+| `.prettierignore` | Never formats `assets/application.css.liquid` (minified build output) or Dawn's original `assets/*.js`/`*.css`. |
+| `.husky/pre-commit` | Runs `lint-staged`, then `shopify theme check`. Needs Shopify CLI installed globally (`npm install -g @shopify/cli`); the hook stops the commit if it's missing. |
+
 ### 1.3 Theme configuration (in `application.css`)
 
 Pixel-based spacing so `px-10` = `padding-inline: 10px`:
@@ -455,7 +480,7 @@ Max opacity: top band ≤ 0.35, bottom band ≤ 0.45 — heavier kills the produ
 
 ## 6. Build pipeline
 
-- Watcher must be running (`npm run build`) or new utility classes won't compile — check the watcher FIRST if a class has no effect.
+- Watcher must be running (`npm run build`) or new utility classes won't compile — check the watcher FIRST if a class has no effect. The `build` script is the fixed watch+minify command from §1.2a; if a project's `package.json` differs, restore it to that exact command.
 - Never build class names by string concatenation (`` text-${x}-500 ``) — the compiler can't see them.
 - Converting raw CSS to `@apply`: verify, don't assume equivalence — rebuild (`npx @tailwindcss/cli -i css/application.css -o <scratch-file> -m`) and diff the compiled selector's values against the pre-change output. A successful build only proves the syntax parsed. Breakpoint token off-by-ones are the easiest miss — confirm the registered `--breakpoint-*` value matches the literal pixel boundary you mean (`--breakpoint-990: 990px` gives `max-990:` a sub-pixel-below-990 cutoff, matching an inclusive `≤989px` mobile range).
 
